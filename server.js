@@ -35,7 +35,7 @@ let effectiveHost = DEFAULT_HOST;
 let effectivePort = DEFAULT_PORT;
 
 function printHelp() {
-  console.log(`桌面音频频谱 · 本地服务 v${VERSION}
+  console.log(`音频可视化网页推流-Audio Visualizer Web · 本地服务 v${VERSION}
 
 用法:
   node server.js [选项]
@@ -584,7 +584,7 @@ function start() {
 
     console.log('');
     console.log('  ┌────────────────────────────────────────────────┐');
-    console.log('  │   桌面音频频谱 · Desktop Audio Visualizer      │');
+    console.log('  │   音频可视化网页推流-Audio Visualizer Web      │');
     console.log('  └────────────────────────────────────────────────┘');
     console.log('');
     console.log(`  控制台 / 采集端   http://${localHost}:${actualPort}/`);

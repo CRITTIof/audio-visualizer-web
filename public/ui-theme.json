@@ -1,0 +1,35 @@
+{
+  "title": {
+    "text": "音频可视化网页推流",
+    "fontFamily": "\"DengXian\", \"等线\", \"Microsoft YaHei UI\", \"Microsoft YaHei\", \"PingFang SC\", sans-serif",
+    "fontSize": "clamp(30px, 8.4vw, 84px)",
+    "fontWeight": 800,
+    "color": "#0c1712",
+    "opacity": 1,
+    "letterSpacing": "0.035em",
+    "lineHeight": 1.02,
+    "fadeStart": 55,
+    "fadeEnd": 95
+  },
+  "subtitle": {
+    "text": "Audio Visualizer Web",
+    "fontFamily": "\"Segoe UI\", \"Helvetica Neue\", Arial, sans-serif",
+    "fontSize": "clamp(12px, 1.35vw, 20px)",
+    "fontWeight": 600,
+    "color": "#1b6b50",
+    "opacity": 0.9,
+    "letterSpacing": "0.24em"
+  },
+  "interface": {
+    "fontFamily": "\"DengXian\", \"等线\", \"Microsoft YaHei UI\", \"Microsoft YaHei\", \"PingFang SC\", \"Noto Sans SC\", system-ui, sans-serif",
+    "textColor": "#18231e",
+    "mutedColor": "#68776f"
+  },
+  "background": {
+    "color": "#fffdf7",
+    "gridColor": "#24ffc8",
+    "gridSize": 38,
+    "gridMinOpacity": 0.05,
+    "gridMaxOpacity": 0.3
+  }
+}

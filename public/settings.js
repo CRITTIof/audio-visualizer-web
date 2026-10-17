@@ -59,7 +59,6 @@
     rainbowSaturation: 88,
     rainbowLightness: 58,
     hueDrift: 0,
-    glow: 18,
 
     // Background ---------------------------------------------------------
     bgColor: '#000000',
@@ -91,7 +90,6 @@
     rainbowSaturation: [0, 100],
     rainbowLightness: [20, 82],
     hueDrift: [-180, 180],
-    glow: [0, 80],
     bgOpacity: [0, 100]
   });
 
@@ -123,7 +121,6 @@
         color1: '#22e6ff',
         color2: '#7b5cff',
         color3: '#ff3d9f',
-        glow: 24,
         smoothing: 58,
         barCount: 80,
         gap: 24,
@@ -136,14 +133,13 @@
     {
       id: 'aurora',
       name: '极光声纹',
-      hint: '流动波形 / 高辉光',
+      hint: '流动波形 / 柔和填充',
       settings: {
         renderer: 'wave',
         colorMode: 'gradient',
         color1: '#20ffc2',
         color2: '#29baff',
         color3: '#c06bff',
-        glow: 28,
         smoothing: 34,
         lineWidth: 3.5,
         waveFill: true,
@@ -160,7 +156,6 @@
         color1: '#32f0ff',
         color2: '#7a5cff',
         color3: '#ff4fa3',
-        glow: 22,
         barCount: 120,
         gap: 34,
         innerRadius: 34,
@@ -171,14 +166,13 @@
     {
       id: 'mono',
       name: '极简白噪',
-      hint: '纯白细柱 / 无辉光',
+      hint: '纯白细柱 / 利落留白',
       settings: {
         renderer: 'bars',
         colorMode: 'solid',
         color1: '#ffffff',
         color2: '#ffffff',
         color3: '#ffffff',
-        glow: 0,
         barCount: 64,
         gap: 38,
         round: 18,
@@ -197,7 +191,6 @@
         color1: '#ffd23f',
         color2: '#ff7a2f',
         color3: '#ff2f7d',
-        glow: 20,
         barCount: 76,
         gap: 22,
         round: 52,
@@ -217,7 +210,6 @@
         color1: '#0aff9d',
         color2: '#1effcf',
         color3: '#d4ff4d',
-        glow: 14,
         barCount: 96,
         gap: 48,
         round: 8,

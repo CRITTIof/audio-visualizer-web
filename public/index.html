@@ -3,9 +3,9 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="color-scheme" content="dark" />
-    <title>SPECTRA · 桌面音频频谱</title>
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="color-scheme" content="light" />
+    <title>音频可视化网页推流</title>
+    <link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml" />
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
@@ -45,15 +45,10 @@
       </symbol>
     </svg>
 
-    <header class="topbar">
-      <div class="brand">
-        <div class="brand-mark" aria-hidden="true">
-          <span></span><span></span><span></span><span></span><span></span>
-        </div>
-        <div class="brand-text">
-          <h1>SPECTRA<span>·</span></h1>
-          <p>桌面音频实时频谱叠加</p>
-        </div>
+    <header class="page-header">
+      <div class="hero">
+        <h1 class="page-title" id="pageTitle">音频可视化网页推流</h1>
+        <p class="page-subtitle" id="pageSubtitle">Audio Visualizer Web</p>
       </div>
       <div class="top-status">
         <span class="pill" id="connectionPill" data-state="connecting">
@@ -62,17 +57,14 @@
         <span class="pill" id="overlayPill">
           <i class="dot dot-alt"></i><span id="overlayText">叠加层 0</span>
         </span>
-        <span class="pill pill-port">PORT <b id="portValue">—</b></span>
+        <span class="pill pill-port">端口 <b id="portValue">—</b></span>
       </div>
     </header>
 
     <main class="workspace">
       <section class="stage-column">
         <div class="stage-heading">
-          <div>
-            <span class="eyebrow">LIVE PREVIEW</span>
-            <h2>透明背景预览</h2>
-          </div>
+          <h2>透明背景预览</h2>
           <div class="stage-actions">
             <button class="button ghost small" id="fullscreenBtn" type="button">
               <svg><use href="#i-expand"></use></svg>全屏
@@ -92,15 +84,13 @@
             </div>
           </div>
           <span class="checker-label">棋格区域 = 透明</span>
-          <span class="fps-badge" id="fpsBadge" title="采集数据帧率，正常约为 30 FPS"><b id="fpsValue">—</b> FPS</span>
-          <span class="preview-live" id="previewLive"><i></i>LIVE</span>
+          <span class="fps-badge" id="fpsBadge" title="采集数据帧率，正常约为每秒 30 帧"><b id="fpsValue">—</b> 帧/秒</span>
         </div>
 
         <div class="capture-card">
           <div class="capture-buttons">
             <button class="button primary" id="captureDesktopBtn" type="button">
               <svg><use href="#i-monitor"></use></svg>共享桌面音频
-              <span class="button-shine"></span>
             </button>
             <button class="button secondary" id="captureMicBtn" type="button">
               <svg><use href="#i-mic"></use></svg>麦克风
@@ -132,11 +122,7 @@
 
         <div class="destination-card">
           <div class="destination-heading">
-            <div>
-              <span class="eyebrow">BROWSER SOURCE</span>
-              <h3>直播姬 / OBS 浏览器源地址</h3>
-            </div>
-            <span class="alpha-tag">ALPHA</span>
+            <h3>直播姬 / OBS 浏览器源地址</h3>
           </div>
           <div class="url-row">
             <input id="overlayUrl" type="text" readonly spellcheck="false" aria-label="浏览器源地址" />
@@ -158,24 +144,19 @@
         </div>
 
         <div class="footer-note">
-          <span>SPECTRA v1.1</span>
-          <span>本地运行 · 音频不离开你的电脑</span>
-          <span>端口 <b id="footerPort">—</b> · 可编辑 config.json 修改</span>
+          <a href="https://github.com/CRITTIof/audio-visualizer-web" target="_blank" rel="noreferrer">https://github.com/CRITTIof/audio-visualizer-web</a>
         </div>
       </section>
 
       <aside class="control-panel">
         <div class="control-heading">
-          <div>
-            <span class="eyebrow">CUSTOMIZE</span>
-            <h2>视觉控制台</h2>
-          </div>
+          <h2>视觉控制台</h2>
           <span class="save-state" id="saveState" data-state="idle">已同步</span>
         </div>
 
         <div class="control-scroll">
           <section class="settings-group">
-            <div class="group-title"><h3>快速预设</h3><span>一键换风格</span></div>
+            <div class="group-title"><h3>快速预设</h3></div>
             <div class="presets" id="presets"></div>
             <div class="inline-actions">
               <button class="text-button" id="randomizeBtn" type="button">随机主题</button>
@@ -184,7 +165,7 @@
           </section>
 
           <section class="settings-group">
-            <div class="group-title"><h3>视觉引擎</h3><span>01</span></div>
+            <div class="group-title"><h3>视觉引擎</h3></div>
 
             <div class="field">
               <label>渲染模式</label>
@@ -219,28 +200,28 @@
             </div>
 
             <div class="slider-field">
-              <div class="field-label"><label for="set-areaWidth">画面宽度</label><output data-output="areaWidth"></output></div>
+              <div class="field-label"><label for="set-areaWidth">画面宽度</label><span class="value-edit"><input class="value-input" title="点击可直接输入数值" data-output="areaWidth" type="text" inputmode="decimal" spellcheck="false" aria-label="数值输入" /><span class="value-unit" data-unit-for="areaWidth"></span></span></div>
               <input id="set-areaWidth" type="range" data-setting="areaWidth" data-suffix="%" min="10" max="100" step="1" />
             </div>
             <div class="slider-field">
-              <div class="field-label"><label for="set-areaHeight">画面高度</label><output data-output="areaHeight"></output></div>
+              <div class="field-label"><label for="set-areaHeight">画面高度</label><span class="value-edit"><input class="value-input" title="点击可直接输入数值" data-output="areaHeight" type="text" inputmode="decimal" spellcheck="false" aria-label="数值输入" /><span class="value-unit" data-unit-for="areaHeight"></span></span></div>
               <input id="set-areaHeight" type="range" data-setting="areaHeight" data-suffix="%" min="5" max="100" step="1" />
             </div>
             <div class="slider-field">
-              <div class="field-label"><label for="set-opacity">整体不透明度</label><output data-output="opacity"></output></div>
+              <div class="field-label"><label for="set-opacity">整体不透明度</label><span class="value-edit"><input class="value-input" title="点击可直接输入数值" data-output="opacity" type="text" inputmode="decimal" spellcheck="false" aria-label="数值输入" /><span class="value-unit" data-unit-for="opacity"></span></span></div>
               <input id="set-opacity" type="range" data-setting="opacity" data-suffix="%" min="0" max="100" step="1" />
             </div>
           </section>
 
           <section class="settings-group">
-            <div class="group-title"><h3>频率与动态</h3><span>02</span></div>
+            <div class="group-title"><h3>频率与动态</h3></div>
 
             <div class="slider-field" data-show-when="renderer:bars,radial">
-              <div class="field-label"><label for="set-barCount">频谱柱数</label><output data-output="barCount"></output></div>
+              <div class="field-label"><label for="set-barCount">频谱柱数</label><span class="value-edit"><input class="value-input" title="点击可直接输入数值" data-output="barCount" type="text" inputmode="decimal" spellcheck="false" aria-label="数值输入" /><span class="value-unit" data-unit-for="barCount"></span></span></div>
               <input id="set-barCount" type="range" data-setting="barCount" data-suffix=" 柱" min="8" max="192" step="1" />
             </div>
             <div class="slider-field" data-show-when="renderer:bars,radial">
-              <div class="field-label"><label for="set-gap">柱间距</label><output data-output="gap"></output></div>
+              <div class="field-label"><label for="set-gap">柱间距</label><span class="value-edit"><input class="value-input" title="点击可直接输入数值" data-output="gap" type="text" inputmode="decimal" spellcheck="false" aria-label="数值输入" /><span class="value-unit" data-unit-for="gap"></span></span></div>
               <input id="set-gap" type="range" data-setting="gap" data-suffix="%" min="0" max="88" step="1" />
             </div>
 
@@ -272,23 +253,23 @@
             </div>
 
             <div class="slider-field">
-              <div class="field-label"><label for="set-sensitivity">灵敏度</label><output data-output="sensitivity"></output></div>
+              <div class="field-label"><label for="set-sensitivity">灵敏度</label><span class="value-edit"><input class="value-input" title="点击可直接输入数值" data-output="sensitivity" type="text" inputmode="decimal" spellcheck="false" aria-label="数值输入" /><span class="value-unit" data-unit-for="sensitivity"></span></span></div>
               <input id="set-sensitivity" type="range" data-setting="sensitivity" data-suffix="×" min="0.2" max="5" step="0.05" />
             </div>
             <div class="slider-field">
-              <div class="field-label"><label for="set-tilt">高频增强</label><output data-output="tilt"></output></div>
+              <div class="field-label"><label for="set-tilt">高频增强</label><span class="value-edit"><input class="value-input" title="点击可直接输入数值" data-output="tilt" type="text" inputmode="decimal" spellcheck="false" aria-label="数值输入" /><span class="value-unit" data-unit-for="tilt"></span></span></div>
               <input id="set-tilt" type="range" data-setting="tilt" min="-0.8" max="2" step="0.05" />
             </div>
             <div class="slider-field">
-              <div class="field-label"><label for="set-smoothing">平滑拖尾</label><output data-output="smoothing"></output></div>
+              <div class="field-label"><label for="set-smoothing">平滑拖尾</label><span class="value-edit"><input class="value-input" title="点击可直接输入数值" data-output="smoothing" type="text" inputmode="decimal" spellcheck="false" aria-label="数值输入" /><span class="value-unit" data-unit-for="smoothing"></span></span></div>
               <input id="set-smoothing" type="range" data-setting="smoothing" data-suffix="%" min="0" max="95" step="1" />
             </div>
             <div class="slider-field">
-              <div class="field-label"><label for="set-noiseFloor">噪声门限</label><output data-output="noiseFloor"></output></div>
+              <div class="field-label"><label for="set-noiseFloor">噪声门限</label><span class="value-edit"><input class="value-input" title="点击可直接输入数值" data-output="noiseFloor" type="text" inputmode="decimal" spellcheck="false" aria-label="数值输入" /><span class="value-unit" data-unit-for="noiseFloor"></span></span></div>
               <input id="set-noiseFloor" type="range" data-setting="noiseFloor" data-suffix="%" min="0" max="50" step="1" />
             </div>
             <div class="slider-field">
-              <div class="field-label"><label for="set-minHeight">最低高度</label><output data-output="minHeight"></output></div>
+              <div class="field-label"><label for="set-minHeight">最低高度</label><span class="value-edit"><input class="value-input" title="点击可直接输入数值" data-output="minHeight" type="text" inputmode="decimal" spellcheck="false" aria-label="数值输入" /><span class="value-unit" data-unit-for="minHeight"></span></span></div>
               <input id="set-minHeight" type="range" data-setting="minHeight" data-suffix="%" min="0" max="40" step="1" />
             </div>
 
@@ -303,30 +284,30 @@
           </section>
 
           <section class="settings-group">
-            <div class="group-title"><h3>形态细节</h3><span>03</span></div>
+            <div class="group-title"><h3>形态细节</h3></div>
 
             <div class="slider-field" data-show-when="renderer:bars">
-              <div class="field-label"><label for="set-round">柱体圆角</label><output data-output="round"></output></div>
+              <div class="field-label"><label for="set-round">柱体圆角</label><span class="value-edit"><input class="value-input" title="点击可直接输入数值" data-output="round" type="text" inputmode="decimal" spellcheck="false" aria-label="数值输入" /><span class="value-unit" data-unit-for="round"></span></span></div>
               <input id="set-round" type="range" data-setting="round" data-suffix="%" min="0" max="100" step="1" />
             </div>
             <div class="slider-field" data-show-when="renderer:wave">
-              <div class="field-label"><label for="set-lineWidth">线条粗细</label><output data-output="lineWidth"></output></div>
+              <div class="field-label"><label for="set-lineWidth">线条粗细</label><span class="value-edit"><input class="value-input" title="点击可直接输入数值" data-output="lineWidth" type="text" inputmode="decimal" spellcheck="false" aria-label="数值输入" /><span class="value-unit" data-unit-for="lineWidth"></span></span></div>
               <input id="set-lineWidth" type="range" data-setting="lineWidth" data-suffix="px" min="0.5" max="20" step="0.5" />
             </div>
             <div class="slider-field" data-show-when="renderer:wave">
-              <div class="field-label"><label for="set-waveScale">波形幅度</label><output data-output="waveScale"></output></div>
+              <div class="field-label"><label for="set-waveScale">波形幅度</label><span class="value-edit"><input class="value-input" title="点击可直接输入数值" data-output="waveScale" type="text" inputmode="decimal" spellcheck="false" aria-label="数值输入" /><span class="value-unit" data-unit-for="waveScale"></span></span></div>
               <input id="set-waveScale" type="range" data-setting="waveScale" data-suffix="%" min="10" max="300" step="1" />
             </div>
             <div class="switch-row" data-show-when="renderer:wave">
-              <div><strong>波形填充</strong><small>在线条下方加入柔光</small></div>
+              <div><strong>波形填充</strong><small>在线条下方加入半透明填充</small></div>
               <label class="switch"><input type="checkbox" data-setting="waveFill" /><i></i></label>
             </div>
             <div class="slider-field" data-show-when="renderer:radial">
-              <div class="field-label"><label for="set-innerRadius">内圈半径</label><output data-output="innerRadius"></output></div>
+              <div class="field-label"><label for="set-innerRadius">内圈半径</label><span class="value-edit"><input class="value-input" title="点击可直接输入数值" data-output="innerRadius" type="text" inputmode="decimal" spellcheck="false" aria-label="数值输入" /><span class="value-unit" data-unit-for="innerRadius"></span></span></div>
               <input id="set-innerRadius" type="range" data-setting="innerRadius" data-suffix="%" min="0" max="72" step="1" />
             </div>
             <div class="slider-field" data-show-when="renderer:radial">
-              <div class="field-label"><label for="set-spinSpeed">旋转速度</label><output data-output="spinSpeed"></output></div>
+              <div class="field-label"><label for="set-spinSpeed">旋转速度</label><span class="value-edit"><input class="value-input" title="点击可直接输入数值" data-output="spinSpeed" type="text" inputmode="decimal" spellcheck="false" aria-label="数值输入" /><span class="value-unit" data-unit-for="spinSpeed"></span></span></div>
               <input id="set-spinSpeed" type="range" data-setting="spinSpeed" data-suffix="°/s" min="-60" max="60" step="1" />
             </div>
 
@@ -335,13 +316,13 @@
               <label class="switch"><input type="checkbox" data-setting="peakCaps" /><i></i></label>
             </div>
             <div class="slider-field" data-show-when="renderer:bars,radial">
-              <div class="field-label"><label for="set-peakFall">峰值回落速度</label><output data-output="peakFall"></output></div>
+              <div class="field-label"><label for="set-peakFall">峰值回落速度</label><span class="value-edit"><input class="value-input" title="点击可直接输入数值" data-output="peakFall" type="text" inputmode="decimal" spellcheck="false" aria-label="数值输入" /><span class="value-unit" data-unit-for="peakFall"></span></span></div>
               <input id="set-peakFall" type="range" data-setting="peakFall" data-suffix="%/s" min="2" max="80" step="1" />
             </div>
           </section>
 
           <section class="settings-group">
-            <div class="group-title"><h3>色彩与光效</h3><span>04</span></div>
+            <div class="group-title"><h3>色彩</h3></div>
 
             <div class="field">
               <label for="set-colorMode">着色方式</label>
@@ -359,46 +340,42 @@
               <label class="color-field">
                 <span>主色</span>
                 <input type="color" data-setting="color1" aria-label="主色" />
-                <output data-output="color1"></output>
+                <input class="hex-input" title="点击可直接输入十六进制颜色" data-output="color1" type="text" maxlength="7" spellcheck="false" aria-label="主色十六进制编码" />
               </label>
               <label class="color-field" data-show-when="colorMode:gradient,level">
                 <span>辅色</span>
                 <input type="color" data-setting="color2" aria-label="辅色" />
-                <output data-output="color2"></output>
+                <input class="hex-input" title="点击可直接输入十六进制颜色" data-output="color2" type="text" maxlength="7" spellcheck="false" aria-label="辅色十六进制编码" />
               </label>
               <label class="color-field" data-show-when="colorMode:gradient,level">
                 <span>强调色</span>
                 <input type="color" data-setting="color3" aria-label="强调色" />
-                <output data-output="color3"></output>
+                <input class="hex-input" title="点击可直接输入十六进制颜色" data-output="color3" type="text" maxlength="7" spellcheck="false" aria-label="强调色十六进制编码" />
               </label>
               <label class="color-field" data-show-when="renderer:bars,radial">
                 <span>峰值色</span>
                 <input type="color" data-setting="peakColor" aria-label="峰值色" />
-                <output data-output="peakColor"></output>
+                <input class="hex-input" title="点击可直接输入十六进制颜色" data-output="peakColor" type="text" maxlength="7" spellcheck="false" aria-label="峰值色十六进制编码" />
               </label>
             </div>
 
             <div class="slider-field" data-show-when="colorMode:rainbow">
-              <div class="field-label"><label for="set-rainbowSaturation">彩虹饱和度</label><output data-output="rainbowSaturation"></output></div>
+              <div class="field-label"><label for="set-rainbowSaturation">彩虹饱和度</label><span class="value-edit"><input class="value-input" title="点击可直接输入数值" data-output="rainbowSaturation" type="text" inputmode="decimal" spellcheck="false" aria-label="数值输入" /><span class="value-unit" data-unit-for="rainbowSaturation"></span></span></div>
               <input id="set-rainbowSaturation" type="range" data-setting="rainbowSaturation" data-suffix="%" min="0" max="100" step="1" />
             </div>
             <div class="slider-field" data-show-when="colorMode:rainbow">
-              <div class="field-label"><label for="set-rainbowLightness">彩虹明度</label><output data-output="rainbowLightness"></output></div>
+              <div class="field-label"><label for="set-rainbowLightness">彩虹明度</label><span class="value-edit"><input class="value-input" title="点击可直接输入数值" data-output="rainbowLightness" type="text" inputmode="decimal" spellcheck="false" aria-label="数值输入" /><span class="value-unit" data-unit-for="rainbowLightness"></span></span></div>
               <input id="set-rainbowLightness" type="range" data-setting="rainbowLightness" data-suffix="%" min="20" max="82" step="1" />
             </div>
             <div class="slider-field" data-show-when="colorMode:rainbow">
-              <div class="field-label"><label for="set-hueDrift">色相流动</label><output data-output="hueDrift"></output></div>
+              <div class="field-label"><label for="set-hueDrift">色相流动</label><span class="value-edit"><input class="value-input" title="点击可直接输入数值" data-output="hueDrift" type="text" inputmode="decimal" spellcheck="false" aria-label="数值输入" /><span class="value-unit" data-unit-for="hueDrift"></span></span></div>
               <input id="set-hueDrift" type="range" data-setting="hueDrift" data-suffix="°/s" min="-180" max="180" step="1" />
             </div>
 
-            <div class="slider-field">
-              <div class="field-label"><label for="set-glow">辉光强度</label><output data-output="glow"></output></div>
-              <input id="set-glow" type="range" data-setting="glow" min="0" max="80" step="1" />
-            </div>
           </section>
 
           <section class="settings-group">
-            <div class="group-title"><h3>背景与其他</h3><span>05</span></div>
+            <div class="group-title"><h3>背景与其他</h3></div>
 
             <div class="alpha-callout">
               <i></i>
@@ -412,11 +389,11 @@
               <label class="color-field">
                 <span>背景色</span>
                 <input type="color" data-setting="bgColor" aria-label="背景色" />
-                <output data-output="bgColor"></output>
+                <input class="hex-input" title="点击可直接输入十六进制颜色" data-output="bgColor" type="text" maxlength="7" spellcheck="false" aria-label="背景色十六进制编码" />
               </label>
             </div>
             <div class="slider-field">
-              <div class="field-label"><label for="set-bgOpacity">背景不透明度</label><output data-output="bgOpacity"></output></div>
+              <div class="field-label"><label for="set-bgOpacity">背景不透明度</label><span class="value-edit"><input class="value-input" title="点击可直接输入数值" data-output="bgOpacity" type="text" inputmode="decimal" spellcheck="false" aria-label="数值输入" /><span class="value-unit" data-unit-for="bgOpacity"></span></span></div>
               <input id="set-bgOpacity" type="range" data-setting="bgOpacity" data-suffix="%" min="0" max="100" step="1" />
             </div>
 
@@ -445,6 +422,7 @@
     <script src="/settings.js"></script>
     <script src="/visualizer.js"></script>
     <script src="/demo-signal.js"></script>
+    <script src="/theme.js"></script>
     <script src="/app.js"></script>
   </body>
 </html>

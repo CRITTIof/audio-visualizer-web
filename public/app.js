@@ -19,7 +19,6 @@
     connectionText: $('connectionText'),
     overlayText: $('overlayText'),
     portValue: $('portValue'),
-    footerPort: $('footerPort'),
     panelPort: $('panelPort'),
     overlayUrl: $('overlayUrl'),
     copyBtn: $('copyBtn'),
@@ -95,6 +94,21 @@
     return String(Math.round(value * 100) / 100);
   }
 
+  function normalizeHex(value) {
+    var match = String(value).trim().match(/^#?([0-9a-f]{3}|[0-9a-f]{6})$/i);
+    if (!match) return null;
+    var digits = match[1];
+    if (digits.length === 3) {
+      digits = digits
+        .split('')
+        .map(function (part) {
+          return part + part;
+        })
+        .join('');
+    }
+    return '#' + digits.toLowerCase();
+  }
+
   function hslToHex(hue, saturation, lightness) {
     var h = ((hue % 360) + 360) % 360;
     var s = clamp(saturation, 0, 100) / 100;
@@ -156,7 +170,6 @@
   function setPort(port) {
     var text = port ? String(port) : '—';
     elements.portValue.textContent = text;
-    elements.footerPort.textContent = text;
     elements.panelPort.textContent = text;
   }
 
@@ -187,23 +200,119 @@
     });
   }
 
-  function refreshOutputs() {
+  function displayValue(key) {
+    var value = settings[key];
+    if (typeof value === 'string' && value.charAt(0) === '#') {
+      return value.toUpperCase();
+    }
+    if (typeof value === 'number') return formatNumber(value);
+    return String(value);
+  }
+
+  function refreshOutputs(force) {
     document.querySelectorAll('[data-output]').forEach(function (output) {
       var key = output.dataset.output;
-      var value = settings[key];
-      if (value === undefined) return;
-      var input = document.querySelector('[data-setting="' + key + '"]');
-      var suffix = input && input.dataset.suffix ? input.dataset.suffix : '';
-      var text;
-      if (typeof value === 'string' && value.charAt(0) === '#') {
-        text = value.toUpperCase();
-        suffix = '';
-      } else if (typeof value === 'number') {
-        text = formatNumber(value);
+      if (settings[key] === undefined) return;
+      var text = displayValue(key);
+      if (output.tagName === 'INPUT') {
+        if (force === true || document.activeElement !== output) {
+          output.value = text;
+        }
       } else {
-        text = String(value);
+        output.textContent = text;
       }
-      output.textContent = text + suffix;
+    });
+  }
+
+  function syncValueUnits() {
+    document.querySelectorAll('[data-unit-for]').forEach(function (unit) {
+      var key = unit.dataset.unitFor;
+      var range = document.querySelector(
+        'input[type="range"][data-setting="' + key + '"]'
+      );
+      unit.textContent = range && range.dataset.suffix ? range.dataset.suffix : '';
+    });
+  }
+
+  function normalizeFrequencyWindow(key) {
+    if (key === 'minFreq' && settings.maxFreq < settings.minFreq * 1.1) {
+      settings.maxFreq = Math.min(
+        20000,
+        Math.max(200, Math.round(settings.minFreq * 2))
+      );
+    } else if (key === 'maxFreq' && settings.minFreq > settings.maxFreq / 1.1) {
+      settings.minFreq = Math.max(20, Math.round(settings.maxFreq / 2));
+    }
+  }
+
+  function normalizeNumericValue(key, value) {
+    var range = S.RANGES[key];
+    var next = range ? clamp(value, range[0], range[1]) : value;
+    var control = document.querySelector(
+      'input[type="range"][data-setting="' + key + '"]'
+    );
+    var step = control ? Number(control.step) : 1;
+    if (Number.isFinite(step) && step > 0) {
+      next = Math.round(next / step) * step;
+    }
+    return Number(next.toFixed(4));
+  }
+
+  function markInvalid(input) {
+    input.classList.add('is-invalid');
+    window.setTimeout(function () {
+      input.classList.remove('is-invalid');
+    }, 900);
+  }
+
+  function commitOutputValue(input) {
+    var key = input.dataset.output;
+    var current = settings[key];
+    var raw = input.value.trim();
+    var next;
+
+    if (typeof current === 'string' && current.charAt(0) === '#') {
+      next = normalizeHex(raw);
+      if (!next) {
+        markInvalid(input);
+        input.value = displayValue(key);
+        showToast('请输入 6 位十六进制颜色，例如 #24FFC8', 'error');
+        return;
+      }
+    } else {
+      next = Number(raw);
+      if (!raw || !Number.isFinite(next)) {
+        markInvalid(input);
+        input.value = displayValue(key);
+        showToast('请输入有效数字', 'error');
+        return;
+      }
+      next = normalizeNumericValue(key, next);
+    }
+
+    settings[key] = next;
+    normalizeFrequencyWindow(key);
+    commitLocalChange();
+  }
+
+  function bindOutputs() {
+    document.querySelectorAll('input[data-output]').forEach(function (output) {
+      output.addEventListener('focus', function () {
+        output.select();
+      });
+      output.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter') {
+          event.preventDefault();
+          output.blur();
+        } else if (event.key === 'Escape') {
+          event.preventDefault();
+          output.value = displayValue(output.dataset.output);
+          output.blur();
+        }
+      });
+      output.addEventListener('change', function () {
+        commitOutputValue(output);
+      });
     });
   }
 
@@ -328,14 +437,7 @@
     settings[key] = value;
 
     // Keep the frequency window sensible while the user drags.
-    if (key === 'minFreq' && settings.maxFreq < settings.minFreq * 1.1) {
-      settings.maxFreq = Math.min(
-        20000,
-        Math.max(200, Math.round(settings.minFreq * 2))
-      );
-    } else if (key === 'maxFreq' && settings.minFreq > settings.maxFreq / 1.1) {
-      settings.minFreq = Math.max(20, Math.round(settings.maxFreq / 2));
-    }
+    normalizeFrequencyWindow(key);
 
     commitLocalChange();
   }
@@ -424,7 +526,6 @@
       color1: hslToHex(baseHue, 86, 60),
       color2: hslToHex(baseHue + 42 + Math.random() * 28, 84, 61),
       color3: hslToHex(baseHue + 105 + Math.random() * 40, 82, 63),
-      glow: Math.round(8 + Math.random() * 26),
       smoothing: Math.round(32 + Math.random() * 43),
       peakCaps: Math.random() > 0.15
     });
@@ -972,7 +1073,7 @@
           applySettings(data.settings, { remote: true });
         }
       } catch (error) {
-        console.warn('[SPECTRA] 无法解析 hello 事件', error);
+        console.warn('[音频可视化] 无法解析 hello 事件', error);
       }
     });
 
@@ -992,7 +1093,7 @@
           applySettings(data.settings, { remote: true });
         }
       } catch (error) {
-        console.warn('[SPECTRA] 无法解析 config 事件', error);
+        console.warn('[音频可视化] 无法解析 config 事件', error);
       }
     });
   }
@@ -1018,6 +1119,8 @@
     updateOverlayUrl();
     setPort(window.location.port || '80');
     renderPresets();
+    syncValueUnits();
+    bindOutputs();
     bindControls();
     bindActions();
     syncControls();

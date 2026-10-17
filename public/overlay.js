@@ -56,7 +56,7 @@
         try {
           handleFrame(window.DemoSignal.createFrame((now - demoStartedAt) / 1000));
         } catch (error) {
-          console.warn('[SPECTRA] 演示信号生成失败', error);
+          console.warn('[音频可视化] 演示信号生成失败', error);
         }
       }
       requestAnimationFrame(loop);
@@ -89,7 +89,7 @@
         var data = JSON.parse(event.data);
         if (data && data.settings) applySettings(data.settings);
       } catch (error) {
-        console.warn('[SPECTRA] 无法解析服务端配置', error);
+        console.warn('[音频可视化] 无法解析服务端配置', error);
       }
       updateStatus();
     });
@@ -99,7 +99,7 @@
         var data = JSON.parse(event.data);
         if (data && data.settings) applySettings(data.settings);
       } catch (error) {
-        console.warn('[SPECTRA] 无法解析配置更新', error);
+        console.warn('[音频可视化] 无法解析配置更新', error);
       }
     });
 
@@ -108,7 +108,7 @@
         var frame = JSON.parse(event.data);
         if (frame && frame.bands) handleFrame(frame);
       } catch (error) {
-        console.warn('[SPECTRA] 无法解析频谱帧', error);
+        console.warn('[音频可视化] 无法解析频谱帧', error);
       }
     });
   }

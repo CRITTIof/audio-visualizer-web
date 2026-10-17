@@ -39,15 +39,14 @@ body {
   gap: 8px;
   padding: 7px 12px;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 999px;
-  background: rgba(4, 8, 13, 0.32);
-  color: rgba(240, 250, 255, 0.78);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.72);
+  color: rgba(24, 40, 32, 0.82);
   font-size: 12px;
   letter-spacing: 0.05em;
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
   transform: translateX(-50%);
   pointer-events: none;
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(12px);
 }
 
 .overlay-status[hidden] {
@@ -58,8 +57,7 @@ body {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #ffd166;
-  box-shadow: 0 0 8px rgba(255, 209, 102, 0.8);
+  background: #1a9b6e;
   animation: overlay-pulse 1.8s ease-in-out infinite;
 }
 

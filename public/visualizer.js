@@ -364,16 +364,6 @@
       return gradient;
     }
 
-    _glowColor(time) {
-      var cfg = this.settings;
-      if (cfg.colorMode === 'solid') return cfg.color1;
-      if (cfg.colorMode === 'level') return cfg.color2;
-      if (cfg.colorMode === 'rainbow') {
-        return hsl(hueOf(cfg.color1) + time * cfg.hueDrift, cfg.rainbowSaturation, cfg.rainbowLightness);
-      }
-      return cfg.color2;
-    }
-
     _barColor(index, t, value, time) {
       var cfg = this.settings;
       if (cfg.colorMode === 'solid') return cfg.color1;
@@ -411,10 +401,6 @@
           : null;
 
       ctx.save();
-      if (cfg.glow > 0) {
-        ctx.shadowBlur = cfg.glow;
-        ctx.shadowColor = this._glowColor(time);
-      }
 
       for (var i = 0; i < count; i += 1) {
         var t = count > 1 ? i / (count - 1) : 0;
@@ -451,7 +437,6 @@
       }
 
       if (cfg.peakCaps) {
-        ctx.shadowBlur = 0;
         ctx.fillStyle = cfg.peakColor;
         var capHeight = Math.max(1.2, Math.min(3, width * 0.16));
         for (var p = 0; p < count; p += 1) {
@@ -519,12 +504,7 @@
           : this._waveFillGradient(ctx, area);
 
       ctx.save();
-      if (cfg.glow > 0) {
-        ctx.shadowBlur = cfg.glow;
-        ctx.shadowColor = this._glowColor(time);
-      }
 
-      var self = this;
       function trace(direction) {
         ctx.beginPath();
         for (var i = 0; i < count; i += 1) {
@@ -555,7 +535,6 @@
         ctx.save();
         ctx.globalAlpha *= 0.35;
         ctx.strokeStyle = stroke;
-        ctx.shadowBlur = Math.max(0, cfg.glow * 0.5);
         trace(-1);
         ctx.stroke();
         ctx.restore();
@@ -598,10 +577,6 @@
       ctx.save();
       ctx.lineCap = 'round';
       ctx.lineWidth = lineWidth;
-      if (cfg.glow > 0) {
-        ctx.shadowBlur = cfg.glow;
-        ctx.shadowColor = this._glowColor(time);
-      }
 
       for (var i = 0; i < count; i += 1) {
         if (this._values[i] < 0.0004) continue;
@@ -625,7 +600,6 @@
       }
 
       if (cfg.peakCaps) {
-        ctx.shadowBlur = 0;
         ctx.fillStyle = cfg.peakColor;
         ctx.globalAlpha = (cfg.opacity / 100) * 0.82;
         var dotRadius = Math.max(1.1, Math.min(3.2, lineWidth * 0.32));

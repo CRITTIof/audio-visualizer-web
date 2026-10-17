@@ -1,6 +1,6 @@
 @echo off
 setlocal EnableExtensions
-title SPECTRA - Desktop Audio Visualizer
+title 音频可视化网页推流-Audio Visualizer Web
 cd /d "%~dp0"
 chcp 65001 >nul 2>nul
 
@@ -13,7 +13,7 @@ if errorlevel 1 goto :no_node
 
 echo.
 echo  ==========================================================
-echo   SPECTRA - Desktop Audio Visualizer
+echo   音频可视化网页推流-Audio Visualizer Web
 echo  ==========================================================
 echo.
 echo   Starting the local server...
