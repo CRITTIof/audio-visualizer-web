@@ -1,0 +1,23 @@
+{
+  "name": "spectra-desktop-audio-visualizer",
+  "version": "1.1.0",
+  "private": true,
+  "description": "透明背景的桌面音频实时频谱，适用于哔哩哔哩直播姬 / OBS 浏览器源",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CRITTIof/audio-visualizer-web.git"
+  },
+  "author": "Rei Xinglan (CRITTIof) <crittiof@outlook.com>",
+  "homepage": "https://github.com/CRITTIof/audio-visualizer-web",
+  "bugs": {
+    "url": "https://github.com/CRITTIof/audio-visualizer-web/issues"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT"
+}

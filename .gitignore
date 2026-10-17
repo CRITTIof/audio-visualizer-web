@@ -1,0 +1,7 @@
+node_modules/
+_test/
+.edge-profile*/
+.edge-*
+.capture-browser/
+.tmp-test/
+*.log
